@@ -1,37 +1,22 @@
-import { ReactNode } from "react";
+import { ReactElement } from "react";
 import "./TabList.css";
-
-export type Tab = {
-  title: ReactNode;
-  content: ReactNode;
-};
+import { TabProps } from "./Tab";
 
 export type TabListProps = {
-  tabs: Tab[];
+  children: ReactElement<TabProps>[];
   selectedTabIdx: number;
   onSelectedTabChange: (tabIdx: number) => void;
 };
 
 export const TabList = ({
-  tabs,
+  children,
   selectedTabIdx,
   onSelectedTabChange,
 }: TabListProps) => {
-  const getSelectedTabContent = () => {
-    const selectedTab = tabs[selectedTabIdx];
-    if (selectedTab) {
-      return selectedTab.content;
-    }
-  };
-
-  const handleTabChange = (tabIdx: number) => {
-    onSelectedTabChange(tabIdx);
-  };
-
   return (
     <div>
       <div className="tab-list" role="tablist">
-        {tabs.map((tab, tabIdx) => {
+        {children.map((child, tabIdx) => {
           const isSelected = tabIdx === selectedTabIdx;
           let className = "tab-item";
           if (isSelected) {
@@ -39,18 +24,19 @@ export const TabList = ({
           }
           return (
             <button
+              key={tabIdx}
               role="tab"
               aria-selected={isSelected}
               className={className}
-              onClick={() => handleTabChange(tabIdx)}
+              onClick={() => onSelectedTabChange(tabIdx)}
             >
-              <h2>{tab.title}</h2>
+              <h2>{child.props.title}</h2>
             </button>
           );
         })}
       </div>
 
-      {getSelectedTabContent()}
+      <div className="tab-content">{children[selectedTabIdx]}</div>
     </div>
   );
 };

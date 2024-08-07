@@ -1,13 +1,9 @@
 .tab-list {
-  list-style: none;
   display: flex;
   gap: 2rem;
-  padding: 0;
 }
 
 .tab-item {
-  /* all: unset; */
-
   padding: 0.2rem 3rem;
 }
 

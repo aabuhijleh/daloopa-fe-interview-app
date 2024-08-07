@@ -1,32 +1,21 @@
-import { useState } from "react";
 import "./App.css";
-import { Tab, TabList } from "./components/TabList";
+import { TabList } from "./components/TabList";
+import { Tab } from "./components/Tab";
+import { useState } from "react";
 
 function App() {
   const [selectedTabIdx, setSelectedTabIdx] = useState(0);
 
-  const tabs: Tab[] = [
-    {
-      title: <div>👍 hello</div>,
-      content: <div>Tab 1 content</div>,
-    },
-    {
-      title: "Tab 2",
-      content: <div>Tab 2 content</div>,
-    },
-    {
-      title: "Tab 3",
-      content: <div>Tab 3 content</div>,
-    },
-  ];
-
   return (
     <>
       <TabList
-        tabs={tabs}
         selectedTabIdx={selectedTabIdx}
         onSelectedTabChange={setSelectedTabIdx}
-      />
+      >
+        <Tab title={<div>👍 hello</div>}>Tab 1 content</Tab>
+        <Tab title="Tab 2">Tab 2 content</Tab>
+        <Tab title="Tab 3">Tab 3 content</Tab>
+      </TabList>
     </>
   );
 }
