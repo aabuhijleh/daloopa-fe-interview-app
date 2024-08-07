@@ -13,6 +13,26 @@ export const TabList = ({
   selectedTabIdx,
   onSelectedTabChange,
 }: TabListProps) => {
+  const changeTabs = (e: Event) => {
+    const targetTab = e.target as HTMLElement;
+    const tabList = targetTab.parentNode as HTMLElement;
+    const tabGroup = tabList.parentNode as HTMLElement;
+
+    tabList
+      .querySelectorAll(':scope > [aria-selected="true"]')
+      .forEach((t) => t.setAttribute("aria-selected", "false"));
+
+    targetTab.setAttribute("aria-selected", "true");
+
+    tabGroup
+      .querySelectorAll(':scope > [role="tabpanel"]')
+      .forEach((p) => p.setAttribute("hidden", "true"));
+
+    tabGroup
+      .querySelector(`#${targetTab.getAttribute("aria-controls")}`)
+      ?.removeAttribute("hidden");
+  };
+
   useEffect(() => {
     const tabList = document.querySelector('[role="tablist"]');
     const tabs = tabList?.querySelectorAll(':scope > [role="tab"]');
@@ -60,26 +80,6 @@ export const TabList = ({
       tabList?.removeEventListener("keydown", changeFocus);
     };
   }, [selectedTabIdx, onSelectedTabChange]);
-
-  const changeTabs = (e: Event) => {
-    const targetTab = e.target as HTMLElement;
-    const tabList = targetTab.parentNode as HTMLElement;
-    const tabGroup = tabList.parentNode as HTMLElement;
-
-    tabList
-      .querySelectorAll(':scope > [aria-selected="true"]')
-      .forEach((t) => t.setAttribute("aria-selected", "false"));
-
-    targetTab.setAttribute("aria-selected", "true");
-
-    tabGroup
-      .querySelectorAll(':scope > [role="tabpanel"]')
-      .forEach((p) => p.setAttribute("hidden", "true"));
-
-    tabGroup
-      .querySelector(`#${targetTab.getAttribute("aria-controls")}`)
-      ?.removeAttribute("hidden");
-  };
 
   return (
     <div>
